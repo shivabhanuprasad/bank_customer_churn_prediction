@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
@@ -7,12 +8,13 @@ from sklearn.pipeline import Pipeline
 
 
 # Load Dataset Function
-path = r"C:\Users\shiva\OneDrive\Desktop\customer_churn\data\raw\bank_customer_churn.csv"
-
-def load_data(path):
+def load_data(path=None):
     """
     Load dataset from given path
     """
+    if path is None:
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        path = os.path.join(BASE_DIR, "data", "raw", "bank_customer_churn.csv")
     return pd.read_csv(path)
 
 
@@ -72,7 +74,7 @@ def split_data(X, y, test_size=0.2, random_state=42):
 
 # Test preprocessing
 if __name__ == "__main__":
-    df = load_data(path)
+    df = load_data()
     X, y = split_features_target(df)
     cat_cols, num_cols = get_column_types(X)
     preprocessor = build_preprocessor(cat_cols, num_cols)
